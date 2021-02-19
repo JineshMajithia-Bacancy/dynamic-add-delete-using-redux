@@ -26,10 +26,16 @@ class Task1 extends Component {
     }
   };
 
-  deleteTask = (index) => {
+  /*deleteTask = (index) => {
     let copy_tasks = [...this.state.tasks];
     copy_tasks.splice(index, 1);
     this.setState({ tasks: copy_tasks });
+  };*/
+
+  deleteTask = (index) => {
+    document.getElementById("input").value = index;
+    this.props.onDeleteTask();
+    document.getElementById("input").value = "";
   };
 
   editTask = (index) => {
@@ -52,7 +58,11 @@ class Task1 extends Component {
                   <tr>
                     <td>{tasks}</td>
                     <td>
-                      <button onClick={() => this.deleteTask(index)}>
+                      <button
+                        onClick={() => {
+                          this.deleteTask(index);
+                        }}
+                      >
                         Delete Task
                       </button>
                     </td>
@@ -90,7 +100,11 @@ const mapDispatchToProps = (dispatch) => {
         },
       }),
     onEditTask: (index) => dispatch({ type: "editTask" }),
-    onDeleteTask: (index) => dispatch({ type: "deleteTask" }),
+    onDeleteTask: () =>
+      dispatch({
+        type: "deleteTask",
+        package: { index: document.getElementById("input").value },
+      }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Task1);
